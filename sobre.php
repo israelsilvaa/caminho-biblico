@@ -272,7 +272,7 @@ require_once __DIR__ . '/config.php';
         melhorias ou adaptar para suas necessidades.
       </p>
       <p style="text-align: center; margin-top: 20px;">
-        <a href="https://github.com/israelsilvaa/" target="_blank" style="display: inline-block; background: #2E4057; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: background 0.3s ease;">
+        <a href="https://github.com/israelsilvaa/caminho-biblico" target="_blank" style="display: inline-block; background: #2E4057; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: background 0.3s ease;">
           <i class="fab fa-github"></i> Ver no GitHub
         </a>
       </p>

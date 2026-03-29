@@ -23,7 +23,7 @@ Gerador de plano de leitura bíblica personalizado. Crie seu plano de leitura co
 
 1. **Navegue até a pasta htdocs:**
    ```bash
-   cd caminho/biblico/v3/caminho-biblico3/htdocs
+   cd caminho/biblico/v4/caminho-biblico/htdocs
    ```
 
 2. **Inicie o servidor PHP embutido:**

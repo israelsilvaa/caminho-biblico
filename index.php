@@ -448,9 +448,6 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
     <p class="footer-dev">Desenvolvido por: <?= DESENVOLVEDOR ?></p>
 
     <div class="social-links">
-      <a href="sobre.php" class="social-icon" title="Sobre o projeto">
-        <i class="fas fa-info-circle"></i>
-      </a>
       <a href="https://www.instagram.com/israel_silvaaaa/" target="_blank" class="social-icon">
         <i class="fab fa-instagram"></i>
       </a>
@@ -459,6 +456,9 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
       </a>
       <a href="https://www.linkedin.com/in/israel-silva-472b21214/" target="_blank" class="social-icon">
         <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a href="sobre.php" class="social-icon" title="Sobre o projeto">
+        <i class="fas fa-info-circle"></i>
       </a>
     </div>
 
