@@ -235,8 +235,23 @@ function gerarXlsxV4(array $plano, array $p, array $ntSet): void {
     // Marcar fim dos dados
     $x->markDataEnd();
 
-    // Adicionar Status na coluna E (título em E4, dados de E5 em diante)
-    $x->addStatusColumnFixed('Não lido');
+    // Calcular status automático: dias passados = "Lido", dias futuros = "Não lido"
+    $hoje = new DateTime();
+    $hoje->setTime(0, 0, 0);
+    $statusArray = [];
+
+    foreach ($plano as [$data]) {
+        $dc = clone $data;
+        $dc->setTime(0, 0, 0);
+        // Se a data já passou, marcar como "Lido"
+        $statusArray[] = $dc < $hoje ? 'Lido' : 'Não lido';
+    }
+
+    // Adicionar Status na coluna E com valores calculados
+    $x->addStatusColumnFixed($statusArray);
+
+    // Adicionar totais com COUNTIF
+    $x->addTotalsRowFixed();
 
     // Adicionar gráfico na coluna I
     $x->addPieChartFixed();
@@ -332,7 +347,7 @@ function gerarXlsxV4(array $plano, array $p, array $ntSet): void {
           <button type="submit" name="p" value="1" class="btn-primary">
             ✦ Gerar Plano
           </button>
-          <button type="button" onclick="location.href='index2.php'" class="btn-secondary">
+          <button type="button" onclick="location.href='index.php'" class="btn-secondary">
             ↻ Limpar
           </button>
         </div>

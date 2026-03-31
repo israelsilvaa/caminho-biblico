@@ -89,8 +89,9 @@ class XlsxWriterV4_Fixed {
      * Adiciona "Status" em E(headerRow) e dropdowns em E(dataStart):E(dataEnd).
      * Adiciona "Resumo" mesclado em F(headerRow):G(headerRow).
      * headerRow é calculado automaticamente como dataStartRow - 1.
+     * @param string|array $defaultValue 'Não lido', 'Lido' ou array com valores por linha
      */
-    public function addStatusColumnFixed(string $defaultValue = 'Não lido'): void {
+    public function addStatusColumnFixed($defaultValue = 'Não lido'): void {
         $headerRow = $this->dataStartRow - 1;
 
         // Cabeçalho Status na mesma linha que #/Data/Leitura/Test.
@@ -106,9 +107,18 @@ class XlsxWriterV4_Fixed {
         $this->ws->getColumnDimension('G')->setWidth(10);
 
         // Dropdowns em E(dataStart):E(dataEnd)
+        $rowIndex = 0;
         for ($row = $this->dataStartRow; $row <= $this->dataEndRow; $row++) {
             $ref = "E{$row}";
-            $this->ws->setCellValue($ref, $defaultValue);
+
+            // Determinar valor para esta linha
+            if (is_array($defaultValue)) {
+                $value = $defaultValue[$rowIndex] ?? 'Não lido';
+            } else {
+                $value = $defaultValue;
+            }
+
+            $this->ws->setCellValue($ref, $value);
             $this->applyStyle($ref, 'body');
 
             $dv = $this->ws->getCell($ref)->getDataValidation();
@@ -120,6 +130,8 @@ class XlsxWriterV4_Fixed {
             $dv->setPromptTitle('Status da leitura');
             $dv->setPrompt('Selecione: Lido ou Não lido');
             $dv->setFormula1('"Lido,Não lido"');
+
+            $rowIndex++;
         }
     }
 
