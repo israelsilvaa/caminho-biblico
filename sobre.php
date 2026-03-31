@@ -139,6 +139,24 @@ require_once __DIR__ . '/config.php';
     color: #C9A961;
     font-weight: 600;
 }
+
+.feature-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.feature-box p {
+    margin: 0;
+    color: white;
+}
+
+.feature-box ul {
+    color: white;
+    margin-top: 15px;
+}
 </style>
 </head>
 <body>
@@ -175,9 +193,55 @@ require_once __DIR__ . '/config.php';
       <p style="margin-top: 20px;">
         Com esta ferramenta, você pode definir seu próprio ritmo de leitura, começar de qualquer
         ponto das Escrituras e acompanhar seu progresso dia após dia. O plano é gerado
-        automaticamente e pode ser exportado para Excel, permitindo que você marque os capítulos
-        já lidos e mantenha um registro visual do seu avanço.
+        automaticamente e pode ser exportado para Excel com recursos avançados de acompanhamento:
+        marcação de status, totais automáticos e gráfico visual de progresso.
       </p>
+    </div>
+
+    <div class="about-card">
+      <h2><i class="fas fa-chart-pie" style="color: #C9A961;"></i> Acompanhamento de Progresso</h2>
+      <p>
+        O sistema inclui recursos avançados de acompanhamento de leitura, permitindo que você
+        trackeie seu progresso diretamente no Excel:
+      </p>
+      <ul>
+        <li><strong>✅ Coluna Status:</strong> Marque cada dia como "Lido" ou "Não lido" usando dropdowns interativos</li>
+        <li><strong>📈 Totais Automáticos:</strong> Fórmulas COUNTIF atualizam os números em tempo real</li>
+        <li><strong>📊 Gráfico de Pizza:</strong> Visualização automática do seu progresso com porcentagens</li>
+        <li><strong>🎨 Layout Organizado:</strong> Seção "Resumo" destacada com totais e gráfico lado a lado</li>
+        <li><strong>🔄 Atualização Dinâmica:</strong> Altere os Status e veja o gráfico atualizar automaticamente</li>
+      </ul>
+      <div class="feature-box">
+        <p style="text-align: center; font-size: 1.1em; font-weight: 600;">
+          <i class="fas fa-star"></i> Recurso Exclusivo: Gráfico Automático
+        </p>
+        <p style="text-align: center; margin-top: 10px;">
+          Basta marcar os dias como "Lido" no dropdown e acompanhe seu progresso visual no gráfico de pizza!
+        </p>
+      </div>
+    </div>
+
+    <div class="about-card">
+      <h2><i class="fas fa-lightbulb" style="color: #C9A961;"></i> Como Funciona</h2>
+      <p>
+        O sistema calcula automaticamente todos os capítulos da Bíblia (1189 ao total) e gera um
+        plano de leitura baseado nas suas preferências:
+      </p>
+      <ul>
+        <li><strong>Data de início:</strong> Quando você quer começar a ler</li>
+        <li><strong>Capítulos por dia:</strong> De 1 a 20 (recomendado: 3-5)</li>
+        <li><strong>Ponto de partida:</strong> Qual livro e capítulo você já leu</li>
+      </ul>
+      <p>
+        O plano é gerado com datas automáticas e exportado para Excel com:
+      </p>
+      <ul>
+        <li>Cores em zebra para facilitar leitura (Antigo e Novo Testamento)</li>
+        <li>Coluna Status com dropdown "Lido/Não lido"</li>
+        <li>Seção Resumo com totais automáticos (COUNTIF)</li>
+        <li>Gráfico de pizza mostrando progresso com porcentagens</li>
+        <li>Layout profissional e organizado</li>
+      </ul>
     </div>
 
     <div class="about-card">
@@ -194,6 +258,11 @@ require_once __DIR__ . '/config.php';
           <p>Lógica pura, sem frameworks</p>
         </div>
         <div class="tech-item">
+          <i class="fas fa-file-excel"></i>
+          <h3>PhpSpreadsheet</h3>
+          <p>Excel com fórmulas e gráficos</p>
+        </div>
+        <div class="tech-item">
           <i class="fab fa-html5"></i>
           <h3>HTML5</h3>
           <p>Estrutura semântica</p>
@@ -204,9 +273,9 @@ require_once __DIR__ . '/config.php';
           <p>Design responsivo moderno</p>
         </div>
         <div class="tech-item">
-          <i class="fas fa-table"></i>
-          <h3>Excel Nativo</h3>
-          <p>Geração .xlsx em PHP puro</p>
+          <i class="fas fa-chart-pie"></i>
+          <h3>Gráficos</h3>
+          <p>Visualização de progresso</p>
         </div>
         <div class="tech-item">
           <i class="fas fa-font"></i>
@@ -215,39 +284,35 @@ require_once __DIR__ . '/config.php';
         </div>
         <div class="tech-item">
           <i class="fab fa-font-awesome"></i>
-          <h3>Font Awesome</i>
+          <h3>Font Awesome</h3>
           <p>Ícones vetoriais</p>
         </div>
+      </div>
+      <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; margin-top: 20px;">
+        <p style="margin: 0; font-size: 0.9rem; color: #5A6C7D;">
+          <strong>PhpSpreadsheet</strong> é usado para gerar arquivos Excel profissionais com fórmulas COUNTIF,
+          dropdowns de validação de dados e gráficos de pizza interativos.
+        </p>
       </div>
     </div>
 
     <div class="about-card">
       <h2><i class="fas fa-star" style="color: #C9A961;"></i> Destaques Técnicos</h2>
       <ul>
-        <li><strong>Sem dependências externas:</strong> O Excel é gerado 100% em PHP puro, sem usar Composer, bibliotecas externas ou comandos de sistema.</li>
+        <li><strong>Arquitetura Modular:</strong> Código organizado em módulos independentes e reutilizáveis.</li>
+        <li><strong>Excel Avançado:</strong> Usa PhpSpreadsheet para recursos profissionais (fórmulas, gráficos, validação).</li>
         <li><strong>Compatibilidade total:</strong> Funciona em qualquer hospedagem compartilhada com PHP 7.4 ou superior.</li>
         <li><strong>Performance:</strong> Código otimizado para carregamento rápido e experiência fluida.</li>
         <li><strong>Design responsivo:</strong> Interface que se adapta perfeitamente a desktop, tablet e mobile.</li>
         <li><strong>Código limpo:</strong> Estrutura organizada e fácil de manter/modificar.</li>
         <li><strong>Privacidade:</strong> Todos os dados são processados no servidor. Nenhuma informação pessoal é armazenada ou compartilhada.</li>
       </ul>
-    </div>
-
-    <div class="about-card">
-      <h2><i class="fas fa-lightbulb" style="color: #C9A961;"></i> Como Funciona</h2>
-      <p>
-        O sistema calcula automaticamente todos os capítulos da Bíblia (1189 ao total) e gera um
-        plano de leitura baseado nas suas preferências:
-      </p>
-      <ul>
-        <li><strong>Data de início:</strong> Quando você quer começar a ler</li>
-        <li><strong>Capítulos por dia:</strong> De 1 a 20 (recomendado: 3-5)</li>
-        <li><strong>Ponto de partida:</strong> Qual livro e capítulo você já leu</li>
-      </ul>
-      <p>
-        O plano é gerado com datas automáticas e pode ser exportado para Excel com cores
-        diferenciadas para Antigo e Novo Testamento, facilitando o acompanhamento visual.
-      </p>
+      <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; margin-top: 15px;">
+        <p style="margin: 0; font-size: 0.9rem; color: #5A6C7D;">
+          <strong>Estrutura Modular:</strong> O sistema está organizado em módulos dentro da pasta <code>modules/</code>,
+          facilitando a manutenção e evolução do código.
+        </p>
+      </div>
     </div>
 
     <div class="about-card">
@@ -287,6 +352,12 @@ require_once __DIR__ . '/config.php';
     <p class="footer-dev">Desenvolvido por: <?= DESENVOLVEDOR ?></p>
 
     <div class="social-links">
+      <a href="index.php" class="social-icon" title="Gerador de Planos">
+        <i class="fas fa-home"></i>
+      </a>
+      <a href="sobre.php" class="social-icon" title="Sobre o projeto">
+        <i class="fas fa-info-circle"></i>
+      </a>
       <a href="https://www.instagram.com/israel_silvaaaa/" target="_blank" class="social-icon">
         <i class="fab fa-instagram"></i>
       </a>

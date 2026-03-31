@@ -10,8 +10,8 @@ ini_set('display_errors', 1);
 require_once __DIR__ . '/config.php';
 
 // ═══════════════════════════════════════════════════════
-//  CAMINHO BÍBLICO — Gerador de Plano Público
-//  Excel gerado em PHP puro (sem shell_exec, sem Composer)
+//  CAMINHO BÍBLICO V2 — Com Status, Totais e Gráfico
+//  Usa PhpSpreadsheet com funcionalidades V4
 // ═══════════════════════════════════════════════════════
 
 $LIVROS = [
@@ -67,7 +67,6 @@ function formatarLeitura(array $batch): string {
 
     foreach ($batch as [$l, $c]) {
         if ($la === null) {
-            // primeira iteração
             $la = $l;
             $ia = $c;
             $fa = $c;
@@ -111,13 +110,13 @@ function isNt(string $leitura, array $ntSet): bool {
     return false;
 }
 
-// ─── Download XLSX ───────────────────────────────────────────────────
+// ─── Download XLSX com V4 ─────────────────────────────────────────────
 if (($_GET['action'] ?? '') === 'download' && isset($_SESSION['plano_params'])) {
-    require_once __DIR__ . '/XlsxWriter.php';
+    require_once __DIR__ . '/modules/XlsxWriterV4_Fixed.php';
     $p  = $_SESSION['plano_params'];
     $dt = DateTime::createFromFormat('Y-m-d', $p['data_inicio']);
     $plano = gerarPlano($LIVROS, $p['caps_dia'], $p['caps_lidos'], $dt);
-    gerarXlsx($plano, $p, $NT_SET);
+    gerarXlsxV4($plano, $p, $NT_SET);
     exit;
 }
 
@@ -137,7 +136,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'downl
     } else {
         $info      = $MAPA[$livro_idx];
         $cap_livro = max(1, min($info['caps'], $cap_livro));
-        // caps_lidos = capítulos antes do livro selecionado + (cap_livro - 1)
         $caps_lidos = $info['inicio_global'] + ($cap_livro - 1);
 
         $plano = gerarPlano($LIVROS, $caps_dia, $caps_lidos, $dt);
@@ -177,14 +175,14 @@ if ($plano) {
     $slice      = array_slice($plano, ($pagina-1)*$por_pagina, $por_pagina);
 }
 
-// ─── Gerar XLSX ──────────────────────────────────────────────────────
-function gerarXlsx(array $plano, array $p, array $ntSet): void {
-    $x = new XlsxWriter();
+// ─── Gerar XLSX V4 (com Status, Totais e Gráfico) ─────────────────────
+function gerarXlsxV4(array $plano, array $p, array $ntSet): void {
+    $x = new XlsxWriterV4_Fixed();
     $x->addSheet('Plano de Leitura');
-    $x->setColWidth(1, 7);
-    $x->setColWidth(2, 13);
-    $x->setColWidth(3, 56);
-    $x->setColWidth(4, 8);
+    $x->setColWidth('A', 7);
+    $x->setColWidth('B', 13);
+    $x->setColWidth('C', 56);
+    $x->setColWidth('D', 8);
 
     $total   = count($plano);
     $dataFim = $total ? $plano[$total-1][0]->format('d/m/Y') : '—';
@@ -203,7 +201,7 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
     // Linha 3: espaço
     $x->writeRowMerged('', 1, 4, 'sub');
 
-    // Cabeçalho
+    // Cabeçalho (linha 4) - DADOS APENAS, sem Status (Status será adicionado em E5)
     $x->writeRow([
         ['#',          'header'],
         ['Data',       'header'],
@@ -211,12 +209,20 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
         ['Test.',      'header'],
     ]);
 
+    // Marcar início dos dados (será a linha 5, antes do Status)
+    $x->markDataStart();
+
     // Dados
     foreach ($plano as $i => [$data, $leitura]) {
         $nt  = isNt($leitura, $ntSet);
         $par = $i % 2 === 0;
-
-        $style = $par ? 'zebra_even' : 'zebra_odd';
+        // $style = $par ? 'zebra_even' : 'zebra_odd';
+        // // AT = amarelo, NT = azul (comportamento atual)
+        if ($nt) {
+            $style = $par ? 'zebra_even' : 'zebra_odd';
+        } else {
+            $style = $par ? 'at_even' : 'at_odd';
+        }
 
         $x->writeRow([
             [$i+1,                   $style],
@@ -226,14 +232,16 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
         ]);
     }
 
-    // Legenda
-    $x->writeRowMerged('', 1, 4, 'legend');
-    $x->writeRowMerged(
-        'Legenda:  Cores em zebra para facilitar a leitura (Azul claro para AT e NT)',
-        1, 4, 'legend'
-    );
+    // Marcar fim dos dados
+    $x->markDataEnd();
 
-    $x->download('plano_leitura_biblica.xlsx');
+    // Adicionar Status na coluna E (título em E4, dados de E5 em diante)
+    $x->addStatusColumnFixed('Não lido');
+
+    // Adicionar gráfico na coluna I
+    $x->addPieChartFixed();
+
+    $x->download('plano_leitura_biblica_v2.xlsx');
 }
 ?>
 <!DOCTYPE html>
@@ -241,7 +249,7 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= NOME_PROJETO ?> — Gerador de Plano</title>
+<title><?= NOME_PROJETO ?> V2 — Com Status e Gráfico</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -324,7 +332,7 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
           <button type="submit" name="p" value="1" class="btn-primary">
             ✦ Gerar Plano
           </button>
-          <button type="button" onclick="location.href='index.php'" class="btn-secondary">
+          <button type="button" onclick="location.href='index2.php'" class="btn-secondary">
             ↻ Limpar
           </button>
         </div>
@@ -377,9 +385,9 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
 
     <div class="download-bar">
       <a href="?action=download" class="btn-download" target="_blank">
-        ↓ Baixar Excel (.xlsx)
+        Baixar Excel <i class="far fa-file-excel"></i>
       </a>
-      <span class="download-hint">Planilha completa com todos os <?= $total_dias ?> dias</span>
+      <span class="download-hint">Planilha com Status, Totais e Gráfico (<?= $total_dias ?> dias)</span>
     </div>
 
     <?php if ($dia_hoje_idx >= 0): ?>
@@ -423,7 +431,7 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
     <?php if ($total_pag > 1): ?>
     <nav class="pagination">
       <?php if ($pagina > 1): ?>
-        <button type="submit" form="formPlano" name="p" value="<?= $pagina-1 ?>" class="pg-btn">← Ant.</button>
+      <button type="submit" form="formPlano" name="p" value="<?= $pagina-1 ?>" class="pg-btn">← Ant.</button>
       <?php endif; ?>
       <?php
       $ini = max(1,$pagina-2); $fim2 = min($total_pag,$pagina+2);
@@ -432,7 +440,7 @@ function gerarXlsx(array $plano, array $p, array $ntSet): void {
       if($fim2<$total_pag){ if($fim2<$total_pag-1) echo '<span class="pg-dots">…</span>'; echo '<button type="submit" form="formPlano" name="p" value="'.$total_pag.'" class="pg-btn">'.$total_pag.'</button>'; }
       ?>
       <?php if ($pagina < $total_pag): ?>
-        <button type="submit" form="formPlano" name="p" value="<?= $pagina+1 ?>" class="pg-btn">Próx. →</button>
+      <button type="submit" form="formPlano" name="p" value="<?= $pagina+1 ?>" class="pg-btn">Próx. →</button>
       <?php endif; ?>
     </nav>
     <?php endif; ?>

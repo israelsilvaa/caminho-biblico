@@ -1,37 +1,65 @@
 # 📖 Caminho Bíblico
 
-Gerador de plano de leitura bíblica personalizado. Crie seu plano de leitura com a quantidade de capítulos por dia que preferir, começando de qualquer ponto da Bíblia.
+Gerador de plano de leitura bíblica personalizado com acompanhamento de progresso. Crie seu plano de leitura com a quantidade de capítulos por dia que preferir, começando de qualquer ponto da Bíblia, e acompanhe sua evolução com gráficos automáticos.
 
 ## ✨ Funcionalidades
 
+### 📋 Geração de Planos
 - 🎯 **Plano personalizado**: Escolha quantos capítulos ler por dia (1-20)
 - 📅 **Data de início personalizada**: Comece quando quiser
 - 📍 **Comece de qualquer ponto**: Selecione o livro e capítulo onde você está
-- 📊 **Acompanhamento visual**: Zebra colorida no Excel para facilitar a leitura
-- 📥 **Exportação para Excel**: Baixe seu plano completo em formato .xlsx
-- 📱 **Design responsivo**: Funciona perfeitamente em desktop, tablet e mobile
-- 🎨 **Interface elegante**: Design moderno com cores sépias e douradas
+- 🧮 **Cálculo automático**: 1189 capítulos da Bíblia organizados automaticamente
+- 📊 **Testamento AT/NT**: Identificação visual de Antigo e Novo Testamento
+
+### 📊 Acompanhamento de Progresso
+- ✅ **Coluna Status**: Marque cada dia como "Lido" ou "Não lido" com dropdown interativo
+- 📈 **Totais automáticos**: Fórmulas COUNTIF dinâmicas mostrando lidos/não lidos
+- 📊 **Gráfico de pizza**: Visualização automática do progresso com porcentagens
+- 🎨 **Layout organizado**: Seção "Resumo" destacada com totais e gráfico lado a lado
+- 🔄 **Atualização dinâmica**: Altere os Status e veja o gráfico atualizar automaticamente
+
+### 📥 Exportação Excel
+- Formato .xlsx nativo com PhpSpreadsheet
+- Cores em zebra para facilitar leitura (Antigo e Novo Testamento)
+- Dropdowns de validação de dados
+- Fórmulas Excel que atualizam em tempo real
+- Gráficos de pizza interativos
+- Layout profissional e organizado
+
+### 🎨 Interface
+- 📱 **Design responsivo**: Funciona em desktop, tablet e mobile
+- 🎨 **Design elegante**: Cores sépias e douradas
+- ⚡ **Performance**: Carregamento rápido
+- 🌐 **Código limpo**: Estrutura modular e organizada
+- 📈 **Barra de progresso**: Acompanhe estatísticas do plano
 
 ## 🚀 Como Executar
 
 ### Requisitos
 
 - PHP 7.4 ou superior
+- Composer (para PhpSpreadsheet)
 - Navegador web moderno
 
-### Passos
+### Instalação
 
-1. **Navegue até a pasta htdocs:**
+1. **Clone o repositório:**
    ```bash
-   cd caminho/biblico/v4/caminho-biblico/htdocs
+   git clone https://github.com/israelsilvaa/caminho-biblico.git
+   cd caminho-biblico
    ```
 
-2. **Inicie o servidor PHP embutido:**
+2. **Instale as dependências:**
+   ```bash
+   composer install
+   ```
+
+3. **Inicie o servidor PHP:**
    ```bash
    php -S localhost:8000
    ```
 
-3. **Abra seu navegador:**
+4. **Abra seu navegador:**
    ```
    http://localhost:8000
    ```
@@ -44,50 +72,109 @@ Gerador de plano de leitura bíblica personalizado. Crie seu plano de leitura co
    - Selecione o livro onde você está
    - Escolha o capítulo atual desse livro
 4. **Clique em "Gerar Plano"**
-5. **Acompanhe seu progresso** na tabela interativa
-6. **Baixe o Excel** para ter seu plano completo offline
+5. **Acompanhe seu progresso** na tabela interativa com estatísticas
+6. **Baixe o Excel** com todos os recursos de acompanhamento
+
+### Usando o Excel
+
+1. Abra o arquivo `.xlsx` baixado
+2. **Marque seu progresso**: Na coluna "Status", use o dropdown para selecionar "Lido" ou "Não lido"
+3. **Veja os totais atualizarem**: As células F5/G5 e F6/G6 mostram quantidade de lidos/não lidos
+4. **Acompanhe o gráfico**: O gráfico de pizza na coluna I mostra seu progresso visual com porcentagens
 
 ## 📊 Estrutura do Projeto
 
 ```
-htdocs/
-├── index.php          # Página principal e geração do plano
-├── sobre.php          # Página sobre o projeto
-├── config.php         # Configurações centralizadas
-├── XlsxWriter.php     # Classe para gerar arquivos Excel
+caminho-biblico/
+├── index.php                    # Aplicação principal
+├── sobre.php                    # Página sobre o projeto
+├── config.php                   # Configurações
+│
+├── modules/                     # Módulos do sistema
+│   └── XlsxWriterV4_Fixed.php  # Gerador Excel (Status + Totais + Gráfico)
+│
 ├── css/
-│   └── style.css      # Estilos da aplicação
-└── README.md          # Este arquivo
+│   └── style.css                # Estilos
+├── vendor/                      # PhpSpreadsheet (Composer)
+├── composer.json                # Dependências
+├── MODULOS.md                   # Documentação dos módulos
+└── README.md                    # Este arquivo
 ```
 
 ## 🎨 Tecnologias Utilizadas
 
 - **PHP 7.4+** - Lógica pura, sem frameworks
+- **PhpSpreadsheet** - Biblioteca para Excel com fórmulas e gráficos
 - **HTML5** - Estrutura semântica
 - **CSS3** - Design responsivo moderno
 - **JavaScript** - Interações de interface
-- **Excel Nativo** - Geração de .xlsx em PHP puro (sem dependências)
 - **Google Fonts** - Tipografia (Playfair Display & Lato)
 - **Font Awesome** - Ícones
 
 ## 🔧 Características Técnicas
 
-- ✅ **Sem dependências externas** - Excel gerado 100% em PHP puro
-- ✅ **Compatibilidade total** - Funciona em qualquer hospedagem compartilhada
+### Arquitetura Modular
+- ✅ **Módulos independentes** - Código organizado em classes reutilizáveis
+- ✅ **Estrutura limpa** - Fácil manutenção e evolução
+- ✅ **Separação de responsabilidades** - Lógica, apresentação e dados separados
+
+### Recursos Excel Avançados
+- ✅ **PhpSpreadsheet** - Biblioteca robusta para manipulação de Excel
+- ✅ **Fórmulas COUNTIF** - Cálculos dinâmicos de totais
+- ✅ **Dropdowns de validação** - Entrada de dados controlada
+- ✅ **Gráficos de pizza** - Visualização de dados automática
+- ✅ **Colunas ocultas** - Dados auxiliares invisíveis para o gráfico
+- ✅ **Porcentagens** - Labels com porcentagem nas fatias do gráfico
+
+### Performance e Compatibilidade
+- ✅ **Compatibilidade total** - Funciona em hospedagem compartilhada
 - ✅ **Performance otimizada** - Código limpo e eficiente
-- ✅ **Código organizado** - Fácil de manter e estender
+- ✅ **Design responsivo** - Adapta-se a qualquer dispositivo
 - ✅ **Privacidade** - Nenhum dado pessoal é armazenado
 
-## 📝 Formato do Excel
+## 📝 Layout do Excel
 
-O arquivo Excel gerado contém:
+O arquivo Excel gerado possui o seguinte layout fixo:
 
-- **Título e informações do plano** (data início, fim, total de dias)
-- **Tabela completa** com todos os dias de leitura
-- **Cores em zebra** para facilitar a leitura
-  - Linhas pares: `#EEF3FF` (azul claro)
-  - Linhas ímpares: `#E0EAFF` (azul médio)
-- **Colunas**: Dia, Data, Leitura, Testamento
+**Cabeçalho:**
+- A1:D3 = Título e subtítulo mergeados
+- A4:D4 = Cabeçalho da tabela (#, Data, Leitura, Test.)
+
+**Seção de Acompanhamento:**
+- E4 = "Status" (cabeçalho da coluna)
+- F4:G4 = "Resumo" (célula mergeada)
+
+**Dados e Status:**
+- A5:D∞ = Dados do plano (Dia, Data, Leitura, Testamento)
+- E5:E∞ = Dropdowns "Lido/Não lido"
+
+**Totais Automáticos:**
+- F5 = "Lidos:"
+- G5 = `=COUNTIF(E5:E...,"Lido")`
+- F6 = "Não lidos:"
+- G6 = `=COUNTIF(E5:E...,"Não lido")`
+
+**Gráfico:**
+- J/K = Colunas ocultas (dados auxiliares do gráfico)
+- I8:T26 = Gráfico de pizza com porcentagens
+
+## 📊 Funcionalidades Detalhadas
+
+### Coluna Status
+- **Dropdown interativo**: Selecione "Lido" ou "Não lido" em cada dia
+- **Validação de dados**: Garante entrada consistente
+- **Formatação condicional**: Destaque visual para status
+
+### Totais Automáticos
+- **Fórmulas COUNTIF**: Contam automaticamente lidos/não lidos
+- **Atualização em tempo real**: Basta alterar o status
+- **Cálculo preciso**: Sempre atualizado
+
+### Gráfico de Pizza
+- **Visualização automática**: Mostra proporção de lidos vs não lidos
+- **Porcentagens**: Exibe % diretamente nas fatias
+- **Cores personalizadas**: Azul para lidos, cinza para não lidos
+- **Posicionamento fixo**: Layout organizado e profissional
 
 ## 🤝 Contribuindo
 
