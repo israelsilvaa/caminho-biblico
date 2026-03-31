@@ -76,7 +76,7 @@ function formatarLeitura(array $batch): string {
         if ($l === $la) {
             $fa = $c;
         } else {
-            $grupos[] = ($ia === $fa) ? "$la $ia" : "$la $ia–$fa";
+            $grupos[] = "$la $ia-$fa";
             $la = $l;
             $ia = $c;
             $fa = $c;
@@ -84,7 +84,7 @@ function formatarLeitura(array $batch): string {
     }
 
     if ($la !== null) {
-        $grupos[] = ($ia === $fa) ? "$la $ia" : "$la $ia–$fa";
+        $grupos[] = "$la $ia-$fa";
     }
 
     return implode(' + ', $grupos);
